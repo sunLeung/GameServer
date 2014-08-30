@@ -4,6 +4,7 @@ import java.io.StringWriter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.log.Logger;
 import common.log.LoggerManger;
 
@@ -19,6 +20,11 @@ public class JsonUtils {
 	
 	private static final ObjectMapper mapper = new ObjectMapper();
 	private static final byte[] EMPTY = new byte[0];
+	
+	public static ObjectNode createObjectNode(){
+		ObjectNode node = mapper.createObjectNode(); 
+		return node;
+	}
 	
 	public static String jsonFromObject(Object object) {
         StringWriter writer = new StringWriter();

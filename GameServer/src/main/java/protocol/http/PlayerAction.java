@@ -1,6 +1,7 @@
 package protocol.http;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import game.player.Player;
+import game.player.PlayerService;
 import common.net.HttpPacket;
 import common.utils.JsonUtils;
 
@@ -9,9 +10,9 @@ public class PlayerAction extends HttpAction{
 
 	@Override
 	public String excute(HttpPacket packet) {
-		ObjectNode node=JsonUtils.createObjectNode();
-		node.put("hey", "man");
-		return node.toString();
+		Player p=PlayerService.getPlayer(1);
+		String resp=JsonUtils.encode2Str(p);
+		return resp;
 	}
 	
 }

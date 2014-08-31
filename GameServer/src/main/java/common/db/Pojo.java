@@ -12,6 +12,7 @@ import org.apache.commons.beanutils.BeanUtils;
  * @version V1.0
  */
 public abstract class Pojo implements Serializable {
+	private static final long serialVersionUID = 1L;
 	protected int id;
 
 	public int getId() {

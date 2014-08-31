@@ -48,7 +48,7 @@ public class GameServer {
 	
 	
 	 public static void startHttpServer(final int port){
-			bossGroup = new NioEventLoopGroup();
+			bossGroup = new NioEventLoopGroup(1);
 			workerGroup = new NioEventLoopGroup();
 			try {
 			    ServerBootstrap b = new ServerBootstrap();
@@ -62,6 +62,7 @@ public class GameServer {
 						    ch.pipeline().addLast("packet-decoder",new HttpPacketDecoder());
 						    ch.pipeline().addLast("http-encoder",new HttpResponseEncoder());
 						    ch.pipeline().addLast(executorGroup,"HttpServerHandler",new HttpServerHandler());
+//						    ch.pipeline().addLast("HttpServerHandler",new HttpServerHandler());
 						}
 				    });
 			future = b.bind(new InetSocketAddress(port)).sync();

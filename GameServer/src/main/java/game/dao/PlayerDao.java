@@ -12,9 +12,10 @@ import common.log.LoggerManger;
 public class PlayerDao {
 	private static Logger log=LoggerManger.getLogger();
 	
-	public static int save(Player bean){
+	
+	public static int save(Player player){
 		try {
-			return dbUtils.insert(bean);
+			return dbUtils.insert(player);
 		} catch (SQLException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();

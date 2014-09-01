@@ -20,8 +20,8 @@ import common.net.HttpServerHandler;
 
 public class GameServer {
 	private static ChannelFuture future;
-	private static EventLoopGroup bossGroup;
-	private static EventLoopGroup workerGroup;
+	private static EventLoopGroup bossGroup = new NioEventLoopGroup(1);;
+	private static EventLoopGroup workerGroup = new NioEventLoopGroup();;
 	private static DefaultEventExecutorGroup executorGroup = new DefaultEventExecutorGroup(10);
 	
 	public static void main(String[] args) {
@@ -48,8 +48,6 @@ public class GameServer {
 	
 	
 	 public static void startHttpServer(final int port){
-			bossGroup = new NioEventLoopGroup(1);
-			workerGroup = new NioEventLoopGroup();
 			try {
 			    ServerBootstrap b = new ServerBootstrap();
 			    b.group(bossGroup, workerGroup)

@@ -32,4 +32,9 @@ public class UUID {
 		return gen_uuid(0);
 	}
 
+	
+	public static String createUUIDString(){
+		return java.util.UUID.randomUUID().toString().replace("-", "");
+	}
+	
 }

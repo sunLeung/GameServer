@@ -15,10 +15,13 @@ import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import java.net.InetSocketAddress;
 
 import protocol.http.HttpProtocolContent;
+import common.log.Logger;
+import common.log.LoggerManger;
 import common.net.HttpPacketDecoder;
 import common.net.HttpServerHandler;
 
 public class GameServer {
+	private static Logger logger=LoggerManger.getLogger();
 	private static ChannelFuture future;
 	private static EventLoopGroup bossGroup = new NioEventLoopGroup(1);;
 	private static EventLoopGroup workerGroup = new NioEventLoopGroup();;
@@ -27,7 +30,7 @@ public class GameServer {
 	public static void main(String[] args) {
 		init();
 		startHttpServer(4000);
-		System.out.println("GameServer started.");
+		logger.info("GameServer started.");
 	}
 	
 	public static void init(){
@@ -64,7 +67,7 @@ public class GameServer {
 						}
 				    });
 			future = b.bind(new InetSocketAddress(port)).sync();
-			System.out.println("HTTP server started.Listening:" + port);
+			logger.info("HTTP server started.Listening:" + port);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

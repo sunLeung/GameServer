@@ -1,11 +1,11 @@
 package player;
 
 import game.dao.PlayerDao;
-import game.player.Player;
+import game.player.PlayerBean;
 
 public class CreatePlayer {
 	public static void main(String[] args) {
-		Player p=new Player();
+		PlayerBean p=new PlayerBean();
 		p.setEmail("liangyuxin.02@gmail.com");
 		p.setName("樱花宇下千次狼");
 		p.setPhone("13570290013");

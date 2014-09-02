@@ -1,5 +1,7 @@
 package game.player;
 
+import common.utils.SecurityUtils;
+
 public class Player {
 	private PlayerBean bean;
 	private long loadTime;
@@ -39,5 +41,15 @@ public class Player {
 
 	public void setUpdateTime(long updateTime) {
 		this.updateTime = updateTime;
+	}
+	
+	public String getPassword(){
+		String pwd=this.getBean().getPassword();
+		return SecurityUtils.decryptPassword(pwd);
+	}
+	
+	public void setPassword(String password){
+		String pwd=SecurityUtils.encryptPassword(password);
+		this.bean.setPassword(pwd);
 	}
 }

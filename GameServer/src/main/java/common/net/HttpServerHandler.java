@@ -1,8 +1,8 @@
 package common.net;
 
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
-import static io.netty.handler.codec.http.HttpResponseStatus.INTERNAL_SERVER_ERROR;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import game.player.PlayerService;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,14 +16,27 @@ import protocol.http.HttpAction;
 import protocol.http.HttpProtocolContent;
 
 import common.utils.HttpRespUtils;
+import common.utils.StringUtils;
 
 public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg){
 		if(msg instanceof  HttpPacket){
 			HttpPacket packet=(HttpPacket)msg;
+			if(StringUtils.isBlank(packet.getDeviceid())){
+				HttpRespUtils.response(ctx, HttpResponseStatus.BAD_REQUEST);
+				return;
+			}
+			int protocol=packet.getProtocol();
+			if(protocol>=10){
+				//验证玩家是否已经登录
+				if(StringUtils.isBlank(packet.getToken())||!PlayerService.authPlayer(packet.getPlayerid(), packet.getDeviceid(), packet.getToken())){
+					HttpRespUtils.response(ctx, HttpResponseStatus.UNAUTHORIZED);
+					return;
+				}
+			}
 			
-			HttpAction action=HttpProtocolContent.httpProtocolContent.get(((HttpPacket) msg).getProtocol());
+			HttpAction action=HttpProtocolContent.httpProtocolContent.get(protocol);
 			if(action!=null){
 				HttpAction clone=action.clone();
 				String result=clone.handle(packet);
@@ -43,8 +56,6 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		cause.printStackTrace();
-		if (ctx.channel().isActive()) {
-			HttpRespUtils.response(ctx, INTERNAL_SERVER_ERROR);
-		}
+		ctx.close();
 	}
 }

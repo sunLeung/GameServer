@@ -20,8 +20,9 @@ public class Def {
 	/**不连通服务器的情况下默认请求次数*/
 	public static final int RequestLoop=3;
 	
-	/*****************************登陆验证返回码**********************************/
-	public static final int LoginSucceed=0;
-	public static final int LoginFail=1;
-	public static final int LoginException=2;
+	/*****************************Security***************************/
+	public static final int Orderid=0x00;
+	
+	/**登陆密码secure*/
+	public static final String PasswordSecret="keyhAimOan#";
 }

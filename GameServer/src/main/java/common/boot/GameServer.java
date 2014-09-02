@@ -15,6 +15,7 @@ import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import java.net.InetSocketAddress;
 
 import protocol.http.HttpProtocolContent;
+import common.config.Config;
 import common.log.Logger;
 import common.log.LoggerManger;
 import common.net.HttpPacketDecoder;
@@ -34,6 +35,7 @@ public class GameServer {
 	}
 	
 	public static void init(){
+		LoggerManger.initLoggerConfig(Config.CONFIG_DIR+"logger.xx");
 		HttpProtocolContent.init();
 	}
 	

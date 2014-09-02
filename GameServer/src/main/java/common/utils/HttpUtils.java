@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
@@ -91,7 +92,7 @@ public class HttpUtils {
 		StringBuffer result = new StringBuffer();
 		try {
 			URL realUrl = new URL(url);
-			URLConnection conn = realUrl.openConnection();
+			HttpURLConnection conn = (HttpURLConnection)realUrl.openConnection();
 			conn.setRequestProperty("accept", "*/*");
 			conn.setRequestProperty("connection", "Keep-Alive");
 			conn.setRequestProperty("user-agent","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
@@ -105,10 +106,12 @@ public class HttpUtils {
 			out = new PrintWriter(conn.getOutputStream());
 			out.print(body);
 			out.flush();
-			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			String line;
-			while ((line = in.readLine()) != null) {
-				result.append(line);
+			if(conn.getResponseCode()==200){
+				in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				String line;
+				while ((line = in.readLine()) != null) {
+					result.append(line);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

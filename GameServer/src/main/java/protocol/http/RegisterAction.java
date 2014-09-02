@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import common.net.HttpPacket;
 import common.utils.JsonUtils;
 import common.utils.StringUtils;
-import common.utils.UUID;
+import common.utils.SecurityUtils;
 
 @HttpProtocol(0x01)
 public class RegisterAction extends HttpAction{
@@ -94,10 +94,10 @@ public class RegisterAction extends HttpAction{
 			bean.setDeviceid(packet.getDeviceid());
 			bean.setEmail(email);
 			bean.setName(name);
-			bean.setPassword(password1);
+			bean.setPassword(SecurityUtils.encryptPassword(password1));
 			bean.setPhone(phone);
 			bean.setSex(sex);
-			bean.setToken(UUID.createUUIDString());
+			bean.setToken(SecurityUtils.createUUIDString());
 			
 			int id=PlayerDao.save(bean);
 			if(id!=-1){

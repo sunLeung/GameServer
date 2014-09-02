@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.mchange.v2.c3p0.DataSources;
+import common.config.Config;
 
 /**
  * 
@@ -23,7 +24,7 @@ public class C3P0Utils {
 	private static ThreadLocal<Connection> tl = new ThreadLocal<Connection>();
 	static {
 		//加载c3p0连接池配置  
-		System.setProperty("com.mchange.v2.c3p0.cfg.xml",C3P0Utils.class.getResource("/").getPath()+"c3p0-config.xml");
+		System.setProperty("com.mchange.v2.c3p0.cfg.xml",Config.CONFIG_DIR+"c3p0-config.xml");
 		ds = new ComboPooledDataSource();
 	}
 

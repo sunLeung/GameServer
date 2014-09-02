@@ -20,7 +20,6 @@ public class DbUtils extends DbBase{
 	}
 	@Override
 	protected void setQueryRunner(){
-		// TODO Auto-generated method stub
 		this.runner=new QueryRunner(C3P0Utils.getDataSource());
 	}
 

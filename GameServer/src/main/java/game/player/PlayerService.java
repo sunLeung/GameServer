@@ -2,7 +2,7 @@ package game.player;
 
 import game.dao.PlayerDao;
 
-import common.utils.UUID;
+import common.utils.SecurityUtils;
 
 public class PlayerService {
 	
@@ -34,16 +34,16 @@ public class PlayerService {
 		//使用email登录
 		if(identity.contains("@")){
 			PlayerBean bean=PlayerDao.loadByEmail(identity);
-			if(bean!=null&&password.equals(bean.getPassword())){
+			if(bean!=null&&password.equals(SecurityUtils.decryptPassword(bean.getPassword()))){
 				bean.setDeviceid(deviceid);
-				bean.setToken(UUID.createUUIDString());
+				bean.setToken(SecurityUtils.createUUIDString());
 				p=PlayerCache.initPlayer(bean);
 			}
 		}else{//使用手机登录
 			PlayerBean bean=PlayerDao.loadByPhone(identity);
-			if(bean!=null&&password.equals(bean.getPassword())){
+			if(bean!=null&&password.equals(SecurityUtils.decryptPassword(bean.getPassword()))){
 				bean.setDeviceid(deviceid);
-				bean.setToken(UUID.createUUIDString());
+				bean.setToken(SecurityUtils.createUUIDString());
 				p=PlayerCache.initPlayer(bean);
 			}
 		}

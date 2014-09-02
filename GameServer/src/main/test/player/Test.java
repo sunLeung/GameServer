@@ -1,3 +1,4 @@
+package player;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +35,7 @@ public class Test {
 		requestProperty.put("token", "1720f6a8d2834dacb05eba07548246d6");
 		
 		Map<String,Object> body = new HashMap<String, Object>();
+		body.put("attribute", "phone#name");
 		String data=JsonUtils.encode2Str(body);
 		String a=HttpUtils.doPost("http://127.0.0.1:4000", requestProperty,data);
 		System.out.println(a);

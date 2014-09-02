@@ -37,7 +37,7 @@ public class Test {
 		Map<String,Object> body = new HashMap<String, Object>();
 		body.put("attribute", "phone#name");
 		String data=JsonUtils.encode2Str(body);
-		String a=HttpUtils.doPost("http://127.0.0.1:4000", requestProperty,data);
+		String a=HttpUtils.doPost("http://115.28.234.110:4000", requestProperty,data);
 		System.out.println(a);
 	}
 }

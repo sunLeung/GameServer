@@ -24,12 +24,12 @@ public class HttpPacketDecoder extends MessageToMessageDecoder<FullHttpRequest> 
 			String token=msg.headers().get("token");
 			String protocolStr=msg.headers().get("protocol");
 			logger.debug("Received protocol "+protocolStr);
-			int protocol=Integer.valueOf(protocolStr.replace("0x", ""),16);
+			int protocol=Integer.valueOf(protocolStr.replace("0x", "").trim(),16);
 			String data = msg.content().toString(CharsetUtil.UTF_8);
 			String playeridStr=msg.headers().get("playerid");
 			int playerid=-1;
 			if(StringUtils.isNotBlank(playeridStr))
-				playerid=Integer.valueOf(playeridStr);
+				playerid=Integer.valueOf(playeridStr.trim());
 			HttpPacket packet = new HttpPacket(playerid,deviceid,token,protocol,data,msg);
 			out.add(packet);
 		} catch (Exception e) {

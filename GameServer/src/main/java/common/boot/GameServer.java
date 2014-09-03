@@ -35,7 +35,8 @@ public class GameServer {
 	}
 	
 	public static void init(){
-		LoggerManger.initLoggerConfig(Config.CONFIG_DIR+"logger.xx");
+		Config.init();
+		LoggerManger.initLoggerConfig(Config.LOGGER_CONFIG);
 		HttpProtocolContent.init();
 	}
 	

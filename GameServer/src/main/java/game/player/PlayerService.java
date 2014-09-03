@@ -49,4 +49,19 @@ public class PlayerService {
 		}
 		return p;
 	}
+	
+	/**
+	 * 检测玩家是否有该歌曲
+	 * @param playerid
+	 * @param songid
+	 * @return
+	 */
+	public static boolean hasThisSong(int playerid,int songid){
+		boolean result=false;
+		Player p=PlayerCache.getPlayer(playerid);
+		if(p!=null){
+			result = p.getSongs().contains(songid);
+		}
+		return result;
+	}
 }

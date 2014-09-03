@@ -1,20 +1,17 @@
 package protocol.http;
 
-import game.player.Player;
 import game.player.PlayerService;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import common.net.HttpPacket;
 import common.utils.Def;
 import common.utils.JsonUtils;
-import common.utils.StringUtils;
 
-@HttpProtocol(Def.PROTOCOL_LOGIN)
-public class LoginAction extends HttpAction{
+@HttpProtocol(Def.PROTOCOL_RESOURCE)
+public class ResourceAction extends HttpAction{
 
 	@Override
 	public String excute(HttpPacket packet) {
@@ -22,17 +19,15 @@ public class LoginAction extends HttpAction{
 		try {
 			String data=packet.getData();
 			JsonNode node=JsonUtils.decode(data);
-			String identity = JsonUtils.getString("identity", node);
-			String password = JsonUtils.getString("password",node);
-			if(StringUtils.isNotBlank(identity)&&StringUtils.isNotBlank(password)){
-				Player p=PlayerService.login(identity, password, packet.getDeviceid());
-				if(p!=null){
+			int resourceid = JsonUtils.getInt("resourceid", node);
+			int playerid=packet.getPlayerid();
+			if(resourceid!=-1&&playerid!=-1){
+				boolean b=PlayerService.hasThisSong(playerid, resourceid);
+				if(b){
 					result.put("code", 0);
-					result.put("player", p.getBean());
 					return JsonUtils.encode2Str(result);
 				}
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.put("code", 2);

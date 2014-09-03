@@ -25,4 +25,14 @@ public class Def {
 	
 	/**登陆密码secure*/
 	public static final String PasswordSecret="keyhAimOan#";
+	
+	/*****************************Logger业务日志key***************************/
+	public static final String MONEY_LOG="money";
+	
+	/*****************************协议***************************/
+	public static final int PROTOCOL_LOGIN=0X00;
+	public static final int PROTOCOL_REGISTER=0X01;
+	public static final int PROTOCOL_RESOURCE=0X02;
+	
+	public static final int PROTOCOL_PLAYER=0X0a;
 }

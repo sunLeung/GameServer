@@ -11,12 +11,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import common.net.HttpPacket;
+import common.utils.Def;
 import common.utils.JsonUtils;
 import common.utils.StringUtils;
 import common.utils.SecurityUtils;
 
-@HttpProtocol(0x01)
+@HttpProtocol(Def.PROTOCOL_REGISTER)
 public class RegisterAction extends HttpAction{
 
 	@Override

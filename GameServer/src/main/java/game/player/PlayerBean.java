@@ -1,17 +1,24 @@
 package game.player;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import common.db.Pojo;
+import common.utils.StringUtils;
 
 public class PlayerBean extends Pojo{
 	private static final long serialVersionUID = 1L;
-	private String name;
-	private String email;
-	private String phone;
+	public String name;
+	public String email;
+	public String phone;
 	/**0女,1男*/
-	private int sex;
-	private String password;
-	private String token;
-	private String deviceid;
+	public int sex;
+	public String password;
+	public String token;
+	public String deviceid;
+	public AtomicInteger money;
+	public List<Integer> songs;
 	
 	public String getName() {
 		return name;
@@ -55,5 +62,26 @@ public class PlayerBean extends Pojo{
 	public void setDeviceid(String deviceid) {
 		this.deviceid = deviceid;
 	}
-	
+	public int getMoney() {
+		return money.get();
+	}
+	public void setMoney(int money) {
+		this.money = new AtomicInteger(money);
+	}
+	public String getSongs() {
+		StringBuilder sb=new StringBuilder();
+		for(Integer i:songs){
+			sb.append(i).append(",");
+		}
+		return sb.toString();
+	}
+	public void setSongs(String songs) {
+		this.songs = new ArrayList<Integer>();
+		if(StringUtils.isNotBlank(songs)){
+			String[] temp=songs.split(",");
+			for(String s:temp){
+				this.songs.add(Integer.valueOf(s));
+			}
+		}
+	}
 }

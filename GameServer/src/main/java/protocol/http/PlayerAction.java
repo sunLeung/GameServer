@@ -11,10 +11,11 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import common.net.HttpPacket;
+import common.utils.Def;
 import common.utils.JsonUtils;
 import common.utils.StringUtils;
 
-@HttpProtocol(0x0a)
+@HttpProtocol(Def.PROTOCOL_PLAYER)
 public class PlayerAction extends HttpAction {
 
 	@Override

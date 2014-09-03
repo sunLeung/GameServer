@@ -1,7 +1,7 @@
 package common.boot;
 
+import game.song.SongService;
 import protocol.http.HttpProtocolContent;
-
 import common.config.Config;
 import common.config.LinuxPrinter;
 import common.config.WindowsPrinter;
@@ -41,6 +41,7 @@ public class GameServer {
 		Config.init();
 		LoggerManger.initLoggerConfig(Config.LOGGER_CONFIG);
 		HttpProtocolContent.init();
+		SongService.initSongContent();
 	}
 	
 	public static void stop(){

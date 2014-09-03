@@ -17,8 +17,8 @@ public class PlayerBean extends Pojo{
 	public String password;
 	public String token;
 	public String deviceid;
-	public AtomicInteger money;
-	public List<Integer> songs;
+	public AtomicInteger money=new AtomicInteger();
+	public List<Integer> songs=new ArrayList<Integer>();
 	
 	public String getName() {
 		return name;
@@ -76,7 +76,6 @@ public class PlayerBean extends Pojo{
 		return sb.toString();
 	}
 	public void setSongs(String songs) {
-		this.songs = new ArrayList<Integer>();
 		if(StringUtils.isNotBlank(songs)){
 			String[] temp=songs.split(",");
 			for(String s:temp){

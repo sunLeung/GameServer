@@ -53,7 +53,7 @@ public class PlayerDao {
 	public static PlayerBean loadByPhone(String phone){
 		PlayerBean bean=null;
 		try {
-			bean=dbUtils.read(PlayerBean.class, "where email=?", phone);
+			bean=dbUtils.read(PlayerBean.class, "where phone=?", phone);
 		} catch (SQLException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();

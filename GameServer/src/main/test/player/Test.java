@@ -8,22 +8,24 @@ import common.utils.JsonUtils;
 
 public class Test {
 	public static void main(String[] args) {
-		query();
+//		query();
+		save();
+//		stop();
 	}
 	
 	public static void save(){
 		Map<String,String> requestProperty=new HashMap<String, String>();
-		requestProperty.put("deviceid", "akdsfjlquadsfnn");
+		requestProperty.put("deviceid", "akdsfjlquaasdfdsfnn");
 		requestProperty.put("protocol", "0x01");
 		
 		Map<String,Object> body = new HashMap<String, Object>();
-		body.put("name", "liangyx3");
-		body.put("email", "liangyuxin3.02@gmail.com");
+		body.put("name", "test1");
+		body.put("phone", "13570290013");
 		body.put("password1", "123456");
 		body.put("password2", "123456");
 		body.put("sex", 1);
 		String data=JsonUtils.encode2Str(body);
-		String a=HttpUtils.doPost("http://127.0.0.1:4000", requestProperty,data);
+		String a=HttpUtils.doPost("http://115.28.234.110:4000", requestProperty,data);
 		System.out.println(a);
 	}
 	
@@ -37,7 +39,19 @@ public class Test {
 		Map<String,Object> body = new HashMap<String, Object>();
 		body.put("attribute", "phone#name");
 		String data=JsonUtils.encode2Str(body);
-		String a=HttpUtils.doPost("http://115.28.234.110:4000", requestProperty,data);
+		String a=HttpUtils.doPost("http://127.0.0.1:4002", requestProperty,data);
+		System.out.println(a);
+	}
+	
+	public static void stop(){
+		Map<String,String> requestProperty=new HashMap<String, String>();
+		requestProperty.put("security", "himan");
+		requestProperty.put("method", "0x0a");
+		
+		Map<String,Object> body = new HashMap<String, Object>();
+		body.put("method", "stopServer");
+		String data=JsonUtils.encode2Str(body);
+		String a=HttpUtils.doPost("http://115.28.234.110:4001", requestProperty,data);
 		System.out.println(a);
 	}
 }

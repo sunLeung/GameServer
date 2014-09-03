@@ -85,7 +85,7 @@ public class RegisterAction extends HttpAction{
 				return JsonUtils.encode2Str(result);
 			}
 			
-			p=PlayerDao.loadByEmail(phone);
+			p=PlayerDao.loadByEmail(email);
 			if(p!=null){
 				result.put("code", 8);
 				result.put("msg", "Email has been registered.");

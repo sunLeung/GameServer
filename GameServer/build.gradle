@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
-sourceCompatibility = 1.6
+//sourceCompatibility = 1.6
 version = '1.0'
 jar {
 	manifest {
@@ -35,4 +35,9 @@ uploadArchives {
 	repositories {
 		flatDir { dirs 'repos' }
 	}
+}
+
+task copyJars(type: Copy) {
+	from configurations.runtime
+	into 'build/libs'
 }

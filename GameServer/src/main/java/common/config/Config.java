@@ -19,6 +19,15 @@ public class Config {
 	public static String LOGGER_CONFIG="logger.xx";
 	/**数据库配置*/
 	public static String DB_CONFIG="c3p0-config.xml";
+	/**运行日志输出目录*/
+	public static String SYSTEM_OUT_DIR="sysout";
+	/**是否后台输出*/
+	public static Boolean PRINTER_RUN=true;
+	/**尝试获取输出错误是否打开*/
+	public static Boolean TRY_GET_ERROR_STACK=false;
+	/**管理服安全认证头*/
+	public static String SECURITY="himan";
+	
 	
 	/**
 	 * 初始化配置
@@ -27,5 +36,6 @@ public class Config {
 		CONFIG_DIR=ROOT_DIR+File.separator+CONFIG_DIR+File.separator;
 		LOGGER_CONFIG=CONFIG_DIR+LOGGER_CONFIG;
 		DB_CONFIG=CONFIG_DIR+DB_CONFIG;
+		SYSTEM_OUT_DIR=ROOT_DIR+File.separator+SYSTEM_OUT_DIR+File.separator;
 	}
 }

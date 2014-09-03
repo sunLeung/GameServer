@@ -27,6 +27,9 @@ public class HttpRespUtils {
 		FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1,
 				HttpResponseStatus.OK, Unpooled.copiedBuffer(data, CharsetUtil.UTF_8));
 		response.headers().set(CONTENT_TYPE, "application/json;charset=UTF-8");
+		response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
+		response.headers().set(HttpHeaders.Names.CONNECTION, "close");
+		response.headers().set(HttpHeaders.Names.CONTENT_LENGTH, data.getBytes().length);
 		ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
 	}
 }

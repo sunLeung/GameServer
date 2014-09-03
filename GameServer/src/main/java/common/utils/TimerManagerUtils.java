@@ -123,6 +123,14 @@ public class TimerManagerUtils {
 		}
 		throw new RuntimeException("no such type" + t);
 	}
+	
+	/**
+	 * 清空定时器
+	 */
+	public static void destroyed(){
+		TimerManagerUtils.many_t_scheduler.shutdown();
+		TimerManagerUtils.single_t_scheduler.shutdown();
+	}
 
 }
 class TimerRunner implements Runnable{

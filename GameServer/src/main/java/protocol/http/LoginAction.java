@@ -3,13 +3,10 @@ package protocol.http;
 import game.player.Player;
 import game.player.PlayerService;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import common.net.HttpPacket;
 import common.utils.Def;
+import common.utils.JsonRespUtils;
 import common.utils.JsonUtils;
 import common.utils.StringUtils;
 
@@ -18,7 +15,6 @@ public class LoginAction extends HttpAction{
 
 	@Override
 	public String excute(HttpPacket packet) {
-		Map<String,Object> result=new HashMap<String, Object>();
 		try {
 			String data=packet.getData();
 			JsonNode node=JsonUtils.decode(data);
@@ -27,20 +23,15 @@ public class LoginAction extends HttpAction{
 			if(StringUtils.isNotBlank(identity)&&StringUtils.isNotBlank(password)){
 				Player p=PlayerService.login(identity, password, packet.getDeviceid());
 				if(p!=null){
-					result.put("code", 0);
-					result.put("player", p.getBean());
-					return JsonUtils.encode2Str(result);
+					return JsonRespUtils.success(p.getBean());
 				}
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			result.put("code", 2);
-			return JsonUtils.encode2Str(result);
+			return JsonRespUtils.fail(Def.CODE_LOGIN_EXCEPTION, "Login exception");
 		}
-		result.put("code", 1);
-		result.put("msg", "The password is incorrect.");
-		return JsonUtils.encode2Str(result);
+		return JsonRespUtils.fail(Def.CODE_FAIL, "The password is incorrect.");
 	}
 	
 }

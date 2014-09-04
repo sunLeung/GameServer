@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import common.net.HttpPacket;
 import common.utils.Def;
+import common.utils.JsonRespUtils;
 import common.utils.JsonUtils;
 import common.utils.StringUtils;
 
@@ -20,7 +20,6 @@ public class PlayerAction extends HttpAction {
 
 	@Override
 	public String excute(HttpPacket packet) {
-		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			int playerid = packet.getPlayerid();
 			if (playerid != -1) {
@@ -39,35 +38,19 @@ public class PlayerAction extends HttpAction {
 								Object val = field.get(bean);
 								data.put(attr, val);
 							}
-							result.put("code", 0);
-							result.put("player", data);
-							return JsonUtils.encode2Str(result);
+							return JsonRespUtils.success(data);
 						}else{
-							result.put("code", 0);
-							result.put("player", p.getBean());
-							return JsonUtils.encode2Str(result);
+							return JsonRespUtils.success(p.getBean());
 						}
 					} else {
-						result.put("code", 0);
-						result.put("player", p.getBean());
-						return JsonUtils.encode2Str(result);
+						return JsonRespUtils.success(p.getBean());
 					}
 				}
 			}
-			result.put("code", 1);
-			return JsonUtils.encode2Str(result);
+			return JsonRespUtils.fail(Def.CODE_QUERY_PLAYER_FAIL, "Query player data fail.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			result.put("code", 2);
-			return JsonUtils.encode2Str(result);
+			return JsonRespUtils.fail(Def.CODE_QUERY_PLAYER_EXCEPTION, "Query player data exception.");
 		}
-	}
-
-	public static void main(String[] args) throws NoSuchFieldException,
-			SecurityException, IllegalArgumentException, IllegalAccessException {
-		Player p = PlayerCache.getPlayer(4);
-		Field field = p.getBean().getClass().getDeclaredField("adf");
-		field.setAccessible(true);
-		System.out.println(field.get(p.getBean()));
 	}
 }

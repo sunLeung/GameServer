@@ -15,6 +15,7 @@ import io.netty.util.CharsetUtil;
 import protocol.http.HttpAction;
 import protocol.http.HttpProtocolContent;
 
+import common.utils.Def;
 import common.utils.HttpRespUtils;
 import common.utils.StringUtils;
 
@@ -24,14 +25,14 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 		if(msg instanceof  HttpPacket){
 			HttpPacket packet=(HttpPacket)msg;
 			if(StringUtils.isBlank(packet.getDeviceid())){
-				HttpRespUtils.response(ctx, HttpResponseStatus.BAD_REQUEST);
+				HttpRespUtils.responseFail(ctx, Def.CODE_LOGIN_FAIL,"Deviceid must not be null.");
 				return;
 			}
 			int protocol=packet.getProtocol();
-			if(protocol>=10){
+			if(protocol>=0x0a){
 				//验证玩家是否已经登录
 				if(StringUtils.isBlank(packet.getToken())||!PlayerService.authPlayer(packet.getPlayerid(), packet.getDeviceid(), packet.getToken())){
-					HttpRespUtils.response(ctx, HttpResponseStatus.UNAUTHORIZED);
+					HttpRespUtils.responseFail(ctx, Def.CODE_LOGIN_FAIL,"Verify login authentication fail,please login again.");
 					return;
 				}
 			}
@@ -50,7 +51,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 				return;
 			}
 		}
-		HttpRespUtils.response(ctx, HttpResponseStatus.BAD_REQUEST);
+		HttpRespUtils.responseFail(ctx, Def.CODE_ROUTE_FAIL,"Protocal not found.");
 	}
 
 	@Override

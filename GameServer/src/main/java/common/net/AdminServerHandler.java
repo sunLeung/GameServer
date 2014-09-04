@@ -9,7 +9,9 @@ import io.netty.util.CharsetUtil;
 import java.lang.reflect.Method;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import common.config.Config;
+import common.utils.Def;
 import common.utils.HttpRespUtils;
 import common.utils.JsonUtils;
 import common.utils.StringUtils;
@@ -50,9 +52,9 @@ public class AdminServerHandler extends ChannelInboundHandlerAdapter {
 					}
 				}
 			}
-			HttpRespUtils.response(ctx, HttpResponseStatus.BAD_REQUEST);
+			HttpRespUtils.responseFail(ctx, Def.CODE_FAIL,"It is not a FullHttpRequest.");
 		} catch (Exception e) {
-			HttpRespUtils.response(ctx, HttpResponseStatus.BAD_REQUEST);
+			HttpRespUtils.responseFail(ctx, Def.CODE_EXCEPTION,"Parse request exception.");
 		}
 	}
 

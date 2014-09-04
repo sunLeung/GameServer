@@ -11,7 +11,7 @@ public class Test {
 //		query();
 //		save();
 //		stop();
-//		login();
+		login();
 	}
 	
 	public static void save(){
@@ -47,13 +47,13 @@ public class Test {
 	public static void login(){
 		Map<String,String> requestProperty=new HashMap<String, String>();
 		requestProperty.put("protocol", "0x00");
-		requestProperty.put("deviceid", "akdsfjlquadsfnn");
+		requestProperty.put("deviceid", "liangyuxin");
 		
 		Map<String,Object> body = new HashMap<String, Object>();
 		body.put("identity", "liangyuxin3.02@gmail.com");
 		body.put("password", "123456");
 		String data=JsonUtils.encode2Str(body);
-		String a=HttpUtils.doPost("http://127.0.0.1:4000", requestProperty,data);
+		String a=HttpUtils.doPost("http://115.28.234.110:4000", requestProperty,data);
 		System.out.println(a);
 	}
 	

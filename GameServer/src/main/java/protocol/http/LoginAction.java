@@ -39,6 +39,7 @@ public class LoginAction extends HttpAction{
 			return JsonUtils.encode2Str(result);
 		}
 		result.put("code", 1);
+		result.put("msg", "The password is incorrect.");
 		return JsonUtils.encode2Str(result);
 	}
 	

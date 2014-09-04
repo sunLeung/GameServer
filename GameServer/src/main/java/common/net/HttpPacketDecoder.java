@@ -8,6 +8,7 @@ import io.netty.util.CharsetUtil;
 import java.util.List;
 import java.util.Set;
 
+import common.boot.GameServer;
 import common.log.Logger;
 import common.log.LoggerManger;
 import common.utils.StringUtils;
@@ -22,33 +23,40 @@ public class HttpPacketDecoder extends MessageToMessageDecoder<FullHttpRequest> 
 				return;
 			}
 			
-			System.out.println("=================================");
-			Set<String> set=msg.headers().names();
-			for(String s:set){
-				System.out.println(s+" : "+msg.headers().get(s));
-			}
-			System.out.println("=================================");
-			
 			String deviceid=msg.headers().get("deviceid");
 			String token=msg.headers().get("token");
 			String protocolStr=msg.headers().get("protocol");
+			String playeridStr=msg.headers().get("playerid");
+			
 			logger.debug("Received protocol "+protocolStr);
+			
 			int protocol=Integer.valueOf(protocolStr.replace("0x", "").trim(),16);
 			String data = msg.content().toString(CharsetUtil.UTF_8);
 			
-			System.out.println("=================================");
-			System.out.println(data);
-			System.out.println("=================================");
-			
-			
-			String playeridStr=msg.headers().get("playerid");
 			int playerid=-1;
 			if(StringUtils.isNotBlank(playeridStr))
 				playerid=Integer.valueOf(playeridStr.trim());
 			HttpPacket packet = new HttpPacket(playerid,deviceid,token,protocol,data,msg);
 			out.add(packet);
+			
+			if(GameServer.isTrace){
+				trace(msg,data);
+			}
 		} catch (Exception e) {
 			ctx.close();
 		}
+	}
+	
+	private static void trace(FullHttpRequest msg,String data){
+		System.out.println("\n===============request head==================");
+		Set<String> set=msg.headers().names();
+		for(String s:set){
+			System.out.println(s+" : "+msg.headers().get(s));
+		}
+		System.out.println("==============request head end================\n");
+		
+		System.out.println("\n===============request body==================");
+		System.out.println(data);
+		System.out.println("=============request body end=================\n");
 	}
 }

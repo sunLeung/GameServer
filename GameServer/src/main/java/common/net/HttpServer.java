@@ -1,10 +1,5 @@
 package common.net;
 
-import java.net.InetSocketAddress;
-
-import common.log.Logger;
-import common.log.LoggerManger;
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -16,6 +11,12 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
+
+import java.net.InetSocketAddress;
+
+import common.boot.GameServer;
+import common.log.Logger;
+import common.log.LoggerManger;
 
 public class HttpServer {
 	private static Logger logger=LoggerManger.getLogger();
@@ -36,6 +37,8 @@ public class HttpServer {
 						    ch.pipeline().addLast("http-aggregator",new HttpObjectAggregator(65536));
 						    ch.pipeline().addLast("packet-decoder",new HttpPacketDecoder());
 						    ch.pipeline().addLast("http-encoder",new HttpResponseEncoder());
+						    if(GameServer.isTrace)
+						    	ch.pipeline().addLast("packet-encoder",new HttpPacketEncoder());
 						    ch.pipeline().addLast(executorGroup,"HttpServerHandler",new HttpServerHandler());
 //						    ch.pipeline().addLast("HttpServerHandler",new HttpServerHandler());
 						}

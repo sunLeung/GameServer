@@ -13,6 +13,7 @@ import common.utils.TimerManagerUtils;
 
 public class GameServer {
 	private static Logger logger=LoggerManger.getLogger();
+	public static boolean isTrace=true;
 	
 	public static void main(String[] args) {
 		try {

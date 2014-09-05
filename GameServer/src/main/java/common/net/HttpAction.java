@@ -1,6 +1,5 @@
-package protocol.http;
+package common.net;
 
-import common.net.HttpPacket;
 
 public abstract class HttpAction implements Cloneable{
 	

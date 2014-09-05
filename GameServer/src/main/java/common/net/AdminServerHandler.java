@@ -3,20 +3,25 @@ package common.net;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.util.CharsetUtil;
 
-import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import protocol.admin.GmAction;
+import protocol.admin.PayAction;
 
 import common.config.Config;
 import common.utils.Def;
 import common.utils.HttpRespUtils;
-import common.utils.JsonUtils;
-import common.utils.StringUtils;
 
 public class AdminServerHandler extends ChannelInboundHandlerAdapter {
+	private static Map<String,AdminAction> actions=new HashMap<String, AdminAction>();
+	
+	static{
+		actions.put("admin", new GmAction());
+		actions.put("pay", new PayAction());
+	}
+	
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg){
 		try {
@@ -27,35 +32,42 @@ public class AdminServerHandler extends ChannelInboundHandlerAdapter {
 					return;
 				}
 				String security=request.headers().get("security");
-				String data = request.content().toString(CharsetUtil.UTF_8);
-				if(Config.SECURITY.equals(security)&&StringUtils.isNotBlank(data)){
-					JsonNode node=JsonUtils.decode(data);
-					String clazz="common.admin.AdminService";
-					String method=JsonUtils.getString("method", node);
-					String params=JsonUtils.getString("params", node);
-					if(StringUtils.isNotBlank(method)&&StringUtils.isBlank(params)){
-						Class c=Class.forName(clazz);
-						Method m=c.getDeclaredMethod(method);
-						Object r=m.invoke(c);
-						String rstr="";
-						if(r!=null)rstr=r.toString();
-						HttpRespUtils.response(ctx, rstr);
-						return;
-					}else if(StringUtils.isNotBlank(method)&&StringUtils.isNotBlank(params)){
-						Class c=Class.forName(clazz);
-						Method m=c.getDeclaredMethod(method,String.class);
-						Object r=m.invoke(c, params);
-						String rstr="";
-						if(r!=null)rstr=r.toString();
-						HttpRespUtils.response(ctx, rstr);
-						return;
+				if(Config.SECURITY.equals(security)){
+					String uri=request.getUri();
+					String path="";
+					int index = uri.indexOf('/', 1);
+					if (index == -1) {
+						path = uri.substring(1);
+					} else {
+						path = uri.substring(1, index);
 					}
+					AdminAction action=actions.get(path);
+					if(action!=null){
+						String result=action.excute(ctx, request);
+						HttpRespUtils.response(ctx, result);
+					}else{
+						HttpRespUtils.responseFail(ctx, Def.CODE_FAIL,"Request handler not found.");
+					}
+				}else{
+					HttpRespUtils.responseFail(ctx, Def.CODE_FAIL,"Unauthorized request.");
 				}
+			}else{
+				HttpRespUtils.responseFail(ctx, Def.CODE_FAIL,"It is not a FullHttpRequest.");
 			}
-			HttpRespUtils.responseFail(ctx, Def.CODE_FAIL,"It is not a FullHttpRequest.");
 		} catch (Exception e) {
 			HttpRespUtils.responseFail(ctx, Def.CODE_EXCEPTION,"Parse request exception.");
 		}
+	}
+	public static void main(String[] args) {
+		String uri="http://172.16.8.238/zentaopms/www/index.php?m=my&f=index";
+		String path="";
+		int index = uri.indexOf('/', 1);
+		if (index == -1) {
+			path = uri.substring(1);
+		} else {
+			path = uri.substring(1, index);
+		}
+		System.out.println(path);
 	}
 
 	@Override

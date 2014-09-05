@@ -7,6 +7,8 @@ import common.utils.JsonUtils;
 
 
 public class Test {
+	private static String url="http://127.0.0.1:4000";
+//	private static String url="http://115.28.234.110:4000";
 	public static void main(String[] args) {
 //		query();
 //		save();
@@ -26,7 +28,7 @@ public class Test {
 		body.put("password2", "123456");
 		body.put("sex", 1);
 		String data=JsonUtils.encode2Str(body);
-		String a=HttpUtils.doPost("http://115.28.234.110:4000", requestProperty,data);
+		String a=HttpUtils.doPost(url, requestProperty,data);
 		System.out.println(a);
 	}
 	
@@ -40,7 +42,7 @@ public class Test {
 		Map<String,Object> body = new HashMap<String, Object>();
 		body.put("attribute", "phone#name");
 		String data=JsonUtils.encode2Str(body);
-		String a=HttpUtils.doPost("http://127.0.0.1:4000", requestProperty,data);
+		String a=HttpUtils.doPost(url, requestProperty,data);
 		System.out.println(a);
 	}
 	
@@ -53,7 +55,7 @@ public class Test {
 		body.put("identity", "liangyuxin3.02@gmail.com");
 		body.put("password", "123456");
 		String data=JsonUtils.encode2Str(body);
-		String a=HttpUtils.doPost("http://115.28.234.110:4000", requestProperty,data);
+		String a=HttpUtils.doPost(url, requestProperty,data);
 		System.out.println(a);
 	}
 	
@@ -65,7 +67,7 @@ public class Test {
 		Map<String,Object> body = new HashMap<String, Object>();
 		body.put("method", "stopServer");
 		String data=JsonUtils.encode2Str(body);
-		String a=HttpUtils.doPost("http://115.28.234.110:4001", requestProperty,data);
+		String a=HttpUtils.doPost(url, requestProperty,data);
 		System.out.println(a);
 	}
 }

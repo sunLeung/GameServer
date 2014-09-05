@@ -12,9 +12,6 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.util.CharsetUtil;
-import protocol.http.HttpAction;
-import protocol.http.HttpProtocolContent;
-
 import common.utils.Def;
 import common.utils.HttpRespUtils;
 import common.utils.StringUtils;

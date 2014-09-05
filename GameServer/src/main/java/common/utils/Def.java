@@ -35,6 +35,7 @@ public class Def {
 	
 	public static final int PROTOCOL_PLAYER=0X0a;
 	public static final int PROTOCOL_RESOURCE=0X0b;
+	public static final int PROTOCOL_PAY=0X0c;
 	
 	/*****************************返回码***************************/
 	/******************0-19 基础业务******************/

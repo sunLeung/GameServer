@@ -1,4 +1,4 @@
-package protocol.http;
+package common.net;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

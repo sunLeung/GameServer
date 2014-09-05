@@ -1,13 +1,13 @@
 package common.boot;
 
 import game.song.SongService;
-import protocol.http.HttpProtocolContent;
 import common.config.Config;
 import common.config.LinuxPrinter;
 import common.config.WindowsPrinter;
 import common.log.Logger;
 import common.log.LoggerManger;
 import common.net.AdminServer;
+import common.net.HttpProtocolContent;
 import common.net.HttpServer;
 import common.utils.TimerManagerUtils;
 

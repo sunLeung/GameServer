@@ -1,4 +1,4 @@
-package protocol.http;
+package common.net;
 
 import java.util.Map;
 import java.util.Set;

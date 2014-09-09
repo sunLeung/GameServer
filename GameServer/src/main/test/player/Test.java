@@ -11,9 +11,9 @@ public class Test {
 //	private static String url="http://115.28.234.110:4000";
 	public static void main(String[] args) {
 //		query();
-//		save();
+		save();
 //		stop();
-		login();
+//		login();
 	}
 	
 	public static void save(){
@@ -22,8 +22,8 @@ public class Test {
 		requestProperty.put("protocol", "0x01");
 		
 		Map<String,Object> body = new HashMap<String, Object>();
-		body.put("name", "halo");
-		body.put("email", "halo@gmail.com");
+		body.put("name", "liangyx");
+		body.put("email", "liangyx@gmail.com");
 		body.put("password1", "123456");
 		body.put("password2", "123456");
 		body.put("sex", 1);

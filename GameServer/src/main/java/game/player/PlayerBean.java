@@ -15,6 +15,8 @@ public class PlayerBean extends Pojo{
 	/**0女,1男*/
 	public int sex;
 	public String password;
+	/**用户秘钥*/
+	public String secret;
 	public String token;
 	public String deviceid;
 	public AtomicInteger money=new AtomicInteger();
@@ -82,5 +84,11 @@ public class PlayerBean extends Pojo{
 				this.songs.add(Integer.valueOf(s));
 			}
 		}
+	}
+	public String getSecret() {
+		return secret;
+	}
+	public void setSecret(String secret) {
+		this.secret = secret;
 	}
 }

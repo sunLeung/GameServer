@@ -19,7 +19,7 @@ public class GameServer {
 		try {
 			long s = System.currentTimeMillis();
 			String os = System.getProperty("sun.desktop");
-			System.out.print("[INFO] Running desktop is " + os);
+			System.out.println("[System INFO] Running desktop is " + os);
 			if ("windows".equals(os)) {
 				System.setOut(new WindowsPrinter(System.out));
 				System.setErr(new WindowsPrinter(System.err));

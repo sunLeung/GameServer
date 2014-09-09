@@ -5,6 +5,8 @@ import game.player.Player;
 import game.player.PlayerBean;
 import game.player.PlayerCache;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,6 +83,7 @@ public class RegisterAction extends HttpAction{
 			bean.setEmail(email);
 			bean.setName(name);
 			bean.setPassword(SecurityUtils.encryptPassword(password1));
+			bean.setSecret(SecurityUtils.createUUIDString());
 			bean.setPhone(phone);
 			bean.setSex(sex);
 			bean.setToken(SecurityUtils.createUUIDString());
@@ -88,7 +91,11 @@ public class RegisterAction extends HttpAction{
 			int id=PlayerDao.save(bean);
 			if(id!=-1){
 				Player player=PlayerCache.getPlayer(id);
-				return JsonRespUtils.success(player.getBean());
+				Map<String,Object> r=new HashMap<String, Object>();
+				r.put("id", player.getBean().getId());
+				r.put("name", player.getBean().getName());
+				r.put("token", player.getBean().getToken());
+				return JsonRespUtils.success(r);
 			}
 			return JsonRespUtils.fail(Def.CODE_REGISTER_FAIL, "Create player fail.");
 		} catch (Exception e) {

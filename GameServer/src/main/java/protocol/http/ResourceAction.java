@@ -1,9 +1,13 @@
 package protocol.http;
 
+import game.player.Player;
+import game.player.PlayerCache;
 import game.player.PlayerService;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import common.net.HttpAction;
 import common.net.HttpPacket;
 import common.net.HttpProtocol;
@@ -24,7 +28,10 @@ public class ResourceAction extends HttpAction{
 			if(resourceid!=-1&&playerid!=-1){
 				boolean b=PlayerService.hasThisSong(playerid, resourceid);
 				if(b){
-					return JsonRespUtils.success("Player has this resource.");
+					Map<String, Object> r=new HashMap<String, Object>();
+					Player p=PlayerCache.getPlayer(playerid);
+					r.put("secret", p.getBean().getSecret());
+					return JsonRespUtils.success(r);
 				}
 			}
 		} catch (Exception e) {

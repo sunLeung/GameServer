@@ -4,6 +4,7 @@ import game.song.SongService;
 import common.config.Config;
 import common.config.LinuxPrinter;
 import common.config.WindowsPrinter;
+import common.db.FlushDB;
 import common.log.Logger;
 import common.log.LoggerManger;
 import common.net.AdminServer;
@@ -43,10 +44,12 @@ public class GameServer {
 		LoggerManger.initLoggerConfig(Config.LOGGER_CONFIG);
 		HttpProtocolContent.init();
 		SongService.initSongContent();
+		FlushDB.init();
 	}
 	
 	public static void stop(){
 		try {
+			FlushDB.flush();
 			LoggerManger.stopFileWriter();
 			TimerManagerUtils.destroyed();
 			HttpServer.stopHttpServer();

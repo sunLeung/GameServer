@@ -435,6 +435,48 @@ public abstract class DbBase {
 		}
 		return result;
 	}
+	
+	public int[] update(List<Pojo> list) throws SQLException {
+		if (list == null || list.size() == 0) {
+			return null;
+		}
+		Map<String, String> pojo_bean = list.get(0).listInsertableFields();
+		String[] fields = pojo_bean.keySet().toArray(
+				new String[pojo_bean.size()]);
+		StringBuilder sql = new StringBuilder();
+		sql.append("set ");
+		for (int i = 0; i < fields.length; i++) {
+			if (i > 0)
+				sql.append(',');
+			sql.append(fields[i]).append(" = ? ");
+		}
+		sql.append(" where id=?");
+		
+		PreparedStatement ps = null;
+		int[] result = null;
+		Connection conn=getConnection();
+		try {
+			ps = conn.prepareStatement(sql.toString());
+			this.startTransaction(conn);
+			for (Pojo obj : list) {
+				pojo_bean = obj.listInsertableFields();
+				fields = pojo_bean.keySet().toArray(
+						new String[pojo_bean.size()]);
+				for (int i = 0; i < fields.length; i++) {
+					ps.setObject(i + 1, pojo_bean.get(fields[i]));
+				}
+				ps.setObject(fields.length, obj.getId());
+				ps.addBatch();
+			}
+			result = ps.executeBatch();
+			this.commitTransaction(conn);
+		} finally {
+			fields = null;
+			org.apache.commons.dbutils.DbUtils.closeQuietly(ps);
+			this.closeConnection(conn);
+		}
+		return result;
+	}
 
 	/**
 	 * 运行一条insert/update sql 没有缓存

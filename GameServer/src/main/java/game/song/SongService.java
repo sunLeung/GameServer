@@ -27,7 +27,7 @@ public class SongService {
 	 * @param songid
 	 * @return
 	 */
-	public static Song geSong(int songid){
+	public static Song getSong(int songid){
 		return songContent.get(songid);
 	}
 	

@@ -1,9 +1,13 @@
 package game.dao;
 
 import static common.db.DbUtils.dbUtils;
+import game.player.Player;
 import game.player.PlayerBean;
+import game.player.PlayerCache;
 
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import common.log.Logger;
 import common.log.LoggerManger;
@@ -70,5 +74,28 @@ public class PlayerDao {
 			e.printStackTrace();
 		}
 		return bean;
+	}
+	
+	/**
+	 * 回写玩家数据
+	 */
+	public static void flushPlayer(){
+		try {
+			Map<Integer,Player> map=PlayerCache.getPlayerCacheContent();
+			for(Entry<Integer,Player> entry:map.entrySet()){
+				Player p=entry.getValue();
+				if(p.getUpdateTime()!=-1){
+					int rs=dbUtils.update(p.getBean());
+					if(rs!=1){
+						log.error("flush playerbean errer,playerid is:"+p.getId());
+					}else{
+						p.setUpdateTime(-1);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.toString());
+		}
 	}
 }

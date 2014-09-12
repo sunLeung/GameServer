@@ -2,8 +2,11 @@ package game.song;
 
 import game.dao.SongDao;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SongService {
@@ -31,5 +34,23 @@ public class SongService {
 		return songContent.get(songid);
 	}
 	
+	/**
+	 * 获取某个时间点的歌曲列表
+	 * @param time
+	 * @return
+	 */
+	public static List<Song> getSongList(long time){
+		List<Song> result=new ArrayList<Song>();
+		for(Entry<Integer,Song> entry:songContent.entrySet()){
+			Song s=entry.getValue();
+			if(s.getCreateTime()>=time){
+				result.add(s);
+			}
+		}
+		return result;
+	}
 
+	public static void main(String[] args) {
+		System.out.println(System.currentTimeMillis());
+	}
 }

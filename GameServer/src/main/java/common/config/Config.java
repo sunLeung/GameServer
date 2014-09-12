@@ -28,7 +28,7 @@ public class Config {
 	/**管理服安全认证头*/
 	public static String SECURITY="himan";
 	/**数据定时回写时间*/
-	public static int FLUSH_MINUTE=1;
+	public static int FLUSH_MINUTE=30;
 	
 	
 	/**

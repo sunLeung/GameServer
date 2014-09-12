@@ -1,5 +1,7 @@
 package game.song;
 
+import java.util.Date;
+
 import common.db.Pojo;
 
 public class Song extends Pojo{
@@ -26,6 +28,8 @@ public class Song extends Pojo{
 	private String remark;
 	/**歌曲创建日期*/
 	private long createTime;
+	/**曲谱md5值*/
+	private String md5;
 	
 	public String getName() {
 		return name;
@@ -93,7 +97,12 @@ public class Song extends Pojo{
 	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
 	}
-	
+	public String getMd5() {
+		return md5;
+	}
+	public void setMd5(String md5) {
+		this.md5 = md5;
+	}
 	public void updateState(int posi,boolean value){
 		int v = this.getState();
 		if (value)

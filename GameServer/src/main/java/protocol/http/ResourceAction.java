@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import common.net.HttpAction;
 import common.net.HttpPacket;
 import common.net.HttpProtocol;
@@ -32,6 +31,8 @@ public class ResourceAction extends HttpAction{
 			return checkResourceAuth(packet);
 		}else if("getPlayerSongs".equals(action)){
 			return getPlayerSongs(packet);
+		}else if("getSongList".equals(action)){
+			return getSongList(packet);
 		}
 		return JsonRespUtils.fail(Def.CODE_QUERY_RESOURCE_FAIL, "Can not find action:"+action);
 	}
@@ -53,6 +54,21 @@ public class ResourceAction extends HttpAction{
 		return JsonRespUtils.fail(Def.CODE_QUERY_RESOURCE_FAIL, "Player has not this resource.");
 	}
 	
+	/**
+	 * 获取歌曲库前多少条歌曲
+	 * @param packet
+	 * @return
+	 */
+	public static String getSongList(HttpPacket packet){
+		String data=packet.getData();
+		JsonNode node=JsonUtils.decode(data);
+		long time = JsonUtils.getLong("time", node);
+		if(time!=-1){
+			List<Song> list=SongService.getSongList(time);
+			return JsonRespUtils.success(list);
+		}
+		return JsonRespUtils.fail(Def.CODE_FAIL, "Error param 'time'.");
+	}
 	/**
 	 * 获取玩家所有歌曲信息
 	 * @param packet

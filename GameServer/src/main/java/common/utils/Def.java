@@ -11,6 +11,16 @@ public class Def {
 	
 	
 	
+	/*****************************歌曲状态**********************************/
+	/**是否支持爵士鼓*/
+	public static final int SONG_STATE_JAZZ = (1 << 0);
+	/**是否支持钢琴*/
+	public static final int SONG_STATE_PIANO = (1 << 1);
+	/**是否支持吉他*/
+	public static final int SONG_STATE_GUITAR = (1 << 2);
+	/**是否支持bass*/
+	public static final int SONG_STATE_BASS = (1 << 3);
+	
 	/*****************************支付状态**********************************/
 	public static final int PaySucceed=0;
 	public static final int PayFail=1;

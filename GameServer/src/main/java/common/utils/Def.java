@@ -20,6 +20,8 @@ public class Def {
 	public static final int SONG_STATE_GUITAR = (1 << 2);
 	/**是否支持bass*/
 	public static final int SONG_STATE_BASS = (1 << 3);
+	/**是否发布*/
+	public static final int SONG_STATE_ISREALISE = (1 << 4);
 	
 	/*****************************支付状态**********************************/
 	public static final int PaySucceed=0;

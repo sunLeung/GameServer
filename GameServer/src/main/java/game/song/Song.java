@@ -1,7 +1,5 @@
 package game.song;
 
-import java.util.Date;
-
 import common.db.Pojo;
 
 public class Song extends Pojo{
@@ -20,7 +18,7 @@ public class Song extends Pojo{
 	private int topplayer;
 	/**最高分数*/
 	private int topscore;
-	/**歌曲状态容器 0=是否支持爵士鼓,1=是否支持钢琴,2=是否支持吉他,3=是否支持bass*/
+	/**歌曲状态容器 0=是否支持爵士鼓,1=是否支持钢琴,2=是否支持吉他,3=是否支持bass 4=是否对外发布*/
 	private int state;
 	/**歌曲价格*/
 	private int price;

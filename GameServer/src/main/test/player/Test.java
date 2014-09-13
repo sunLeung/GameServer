@@ -7,13 +7,15 @@ import common.utils.JsonUtils;
 
 
 public class Test {
-	private static String url="http://127.0.0.1:4000";
+//	private static String url="http://127.0.0.1:4000";
+	private static String url="http://127.0.0.1:4001/admin";
 //	private static String url="http://115.28.234.110:4000";
 	public static void main(String[] args) {
 //		query();
-		save();
-//		stop();
+//		save();
+		stop();
 //		login();
+//		createSong();
 	}
 	
 	public static void save(){
@@ -62,12 +64,26 @@ public class Test {
 	public static void stop(){
 		Map<String,String> requestProperty=new HashMap<String, String>();
 		requestProperty.put("security", "himan");
-		requestProperty.put("method", "0x0a");
 		
 		Map<String,Object> body = new HashMap<String, Object>();
 		body.put("method", "stopServer");
 		String data=JsonUtils.encode2Str(body);
 		String a=HttpUtils.doPost(url, requestProperty,data);
+		System.out.println(a);
+	}
+	
+	public static void createSong(){
+		Map<String,String> requestProperty=new HashMap<String, String>();
+		requestProperty.put("security", "himan");
+		
+		Map<String,Object> body = new HashMap<String, Object>();
+		body.put("method", "createSong");
+		Map<String,Object> data=new HashMap<String, Object>();
+		data.put("name", "喜欢你");
+		data.put("mp3URL", "http://halo.com");
+		body.put("data", data);
+		String d=JsonUtils.encode2Str(body);
+		String a=HttpUtils.doPost(url, requestProperty,d);
 		System.out.println(a);
 	}
 }

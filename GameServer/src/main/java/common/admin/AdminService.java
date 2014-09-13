@@ -1,6 +1,15 @@
 package common.admin;
 
+import game.dao.SongDao;
+import game.song.Song;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import common.boot.GameServer;
+import common.utils.Def;
+import common.utils.JsonRespUtils;
+import common.utils.JsonUtils;
 
 public class AdminService {
 	/**
@@ -10,7 +19,22 @@ public class AdminService {
 		GameServer.stop();
 	}
 	
-	public static String test(String s){
-		return s;
+	/**
+	 * 创建新歌曲
+	 * @param s
+	 * @return
+	 */
+	public static String createSong(String s){
+		Song obj=(Song)JsonUtils.objectFromJson(s, Song.class);
+		if(obj!=null){
+			int i=SongDao.save(obj);
+			if(i>0){
+				Map<String,Object> result=new HashMap<String, Object>();
+				result.put("id", i);
+				return JsonRespUtils.success(result);
+			}
+		}
+		return JsonRespUtils.fail(Def.CODE_FAIL, "create song fail.");
 	}
-}
+	
+}	

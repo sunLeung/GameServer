@@ -18,23 +18,26 @@ public class GmAction implements AdminAction {
 	@Override
 	public String excute(ChannelHandlerContext ctx, FullHttpRequest request) {
 		try {
-			String data = request.content().toString(CharsetUtil.UTF_8);
-			if(StringUtils.isNotBlank(data)){
-				JsonNode node=JsonUtils.decode(data);
+			String req = request.content().toString(CharsetUtil.UTF_8);
+			if(StringUtils.isNotBlank(req)){
+				JsonNode node=JsonUtils.decode(req);
 				String clazz="common.admin.AdminService";
 				String method=JsonUtils.getString("method", node);
-				String params=JsonUtils.getString("params", node);
-				if(StringUtils.isNotBlank(method)&&StringUtils.isBlank(params)){
+				String data="";
+				if(node.has("data")&&node.hasNonNull("data")&&node.get("data").isObject()){
+					data=node.get("data").toString();
+				}
+				if(StringUtils.isNotBlank(method)&&StringUtils.isBlank(data)){
 					Class c=Class.forName(clazz);
 					Method m=c.getDeclaredMethod(method);
 					Object r=m.invoke(c);
 					String rstr="";
 					if(r!=null)rstr=r.toString();
 					return JsonRespUtils.success(rstr);
-				}else if(StringUtils.isNotBlank(method)&&StringUtils.isNotBlank(params)){
+				}else if(StringUtils.isNotBlank(method)&&StringUtils.isNotBlank(data)){
 					Class c=Class.forName(clazz);
 					Method m=c.getDeclaredMethod(method,String.class);
-					Object r=m.invoke(c, params);
+					Object r=m.invoke(c, data);
 					String rstr="";
 					if(r!=null)rstr=r.toString();
 					return JsonRespUtils.success(rstr);

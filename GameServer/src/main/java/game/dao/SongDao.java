@@ -22,4 +22,14 @@ public class SongDao {
 		}
 		return list;
 	}
+	
+	public static int save(Song bean){
+		try {
+			return dbUtils.insert(bean);
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+		}
+		return -1;
+	}
 }

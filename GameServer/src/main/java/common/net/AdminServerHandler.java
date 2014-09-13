@@ -58,17 +58,6 @@ public class AdminServerHandler extends ChannelInboundHandlerAdapter {
 			HttpRespUtils.responseFail(ctx, Def.CODE_EXCEPTION,"Parse request exception.");
 		}
 	}
-	public static void main(String[] args) {
-		String uri="http://172.16.8.238/zentaopms/www/index.php?m=my&f=index";
-		String path="";
-		int index = uri.indexOf('/', 1);
-		if (index == -1) {
-			path = uri.substring(1);
-		} else {
-			path = uri.substring(1, index);
-		}
-		System.out.println(path);
-	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

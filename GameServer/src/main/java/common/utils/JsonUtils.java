@@ -42,7 +42,7 @@ public class JsonUtils {
 	public static Object objectFromJson(String json, Class clazz) {  
         Object object;  
         try {  
-            object = mapper.readValue(json, clazz);  
+            object = mapper.readValue(json, clazz);
         } catch (RuntimeException e) {  
             log.error("Runtime exception during deserializing "  
                     + clazz.getSimpleName() + " from "  

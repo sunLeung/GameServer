@@ -11,6 +11,12 @@ public class Def {
 	
 	
 	
+	/*****************************歌曲乐器难度******************************/
+	public static final int SONG_MaxLevel_JAZZ = 5;
+	public static final int SONG_MaxLevel_PIANO = 5;
+	public static final int SONG_MaxLevel_GUITAR = 5;
+	public static final int SONG_MaxLevel_BASS = 5;
+	
 	/*****************************歌曲状态**********************************/
 	/**是否支持爵士鼓*/
 	public static final int SONG_STATE_JAZZ = (1 << 0);
@@ -22,6 +28,8 @@ public class Def {
 	public static final int SONG_STATE_BASS = (1 << 3);
 	/**是否发布*/
 	public static final int SONG_STATE_ISREALISE = (1 << 4);
+	
+	
 	
 	/*****************************支付状态**********************************/
 	public static final int PaySucceed=0;

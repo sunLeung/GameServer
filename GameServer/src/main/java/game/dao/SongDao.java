@@ -1,7 +1,7 @@
 package game.dao;
 
 import static common.db.DbUtils.dbUtils;
-import game.song.Song;
+import game.song.SongBean;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -12,10 +12,10 @@ import common.log.LoggerManger;
 public class SongDao {
 	private static Logger log=LoggerManger.getLogger();
 	
-	public static List<Song> load(){
-		List<Song> list=null;
+	public static List<SongBean> load(){
+		List<SongBean> list=null;
 		try {
-			list=dbUtils.query(Song.class, "");
+			list=dbUtils.query(SongBean.class, "");
 		} catch (SQLException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
@@ -23,7 +23,7 @@ public class SongDao {
 		return list;
 	}
 	
-	public static int save(Song bean){
+	public static int save(SongBean bean){
 		try {
 			return dbUtils.insert(bean);
 		} catch (SQLException e) {

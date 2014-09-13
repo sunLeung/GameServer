@@ -1,7 +1,7 @@
 package common.admin;
 
 import game.dao.SongDao;
-import game.song.Song;
+import game.song.SongBean;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class AdminService {
 	 * @return
 	 */
 	public static String createSong(String s){
-		Song obj=(Song)JsonUtils.objectFromJson(s, Song.class);
+		SongBean obj=(SongBean)JsonUtils.objectFromJson(s, SongBean.class);
 		if(obj!=null){
 			int i=SongDao.save(obj);
 			if(i>0){

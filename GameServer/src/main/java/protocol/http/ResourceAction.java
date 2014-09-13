@@ -3,7 +3,7 @@ package protocol.http;
 import game.player.Player;
 import game.player.PlayerCache;
 import game.player.PlayerService;
-import game.song.Song;
+import game.song.SongBean;
 import game.song.SongService;
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class ResourceAction extends HttpAction{
 		JsonNode node=JsonUtils.decode(data);
 		long time = JsonUtils.getLong("time", node);
 		if(time!=-1){
-			List<Song> list=SongService.getSongList(time);
+			List<SongBean> list=SongService.getSongBeanList(time);
 			return JsonRespUtils.success(list);
 		}
 		return JsonRespUtils.fail(Def.CODE_FAIL, "Error param 'time'.");
@@ -78,10 +78,10 @@ public class ResourceAction extends HttpAction{
 		Player p = PlayerCache.getPlayer(packet.getPlayerid());
 		if(p!=null){
 			List<Integer> songs=p.getSongs();
-			List<Song> songlist=new ArrayList<Song>();
+			List<SongBean> songlist=new ArrayList<SongBean>();
 			if(songs!=null){
 				for(Integer songid:songs){
-					Song s=SongService.getSong(songid);
+					SongBean s=SongService.getSong(songid);
 					if(s!=null)
 						songlist.add(s);
 				}
@@ -101,7 +101,7 @@ public class ResourceAction extends HttpAction{
 		JsonNode node=JsonUtils.decode(data);
 		int resourceid = JsonUtils.getInt("resourceid", node);
 		if(resourceid!=-1){
-			Song song=SongService.getSong(resourceid);
+			SongBean song=SongService.getSong(resourceid);
 			if(song!=null){
 				return JsonRespUtils.success(song);
 			}

@@ -25,6 +25,7 @@ public class AdminService {
 	 * @return
 	 */
 	public static String createSong(String s){
+		System.out.println("do createSong method.");
 		SongBean obj=(SongBean)JsonUtils.objectFromJson(s, SongBean.class);
 		if(obj!=null){
 			int i=SongDao.save(obj);

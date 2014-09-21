@@ -76,4 +76,12 @@ public class SongService {
 		}
 		return result;
 	}
+	
+	/**
+	 * 获取所有歌曲
+	 * @return
+	 */
+	public static List<Song> getSongBeanList(){
+		return songListContent;
+	}
 }

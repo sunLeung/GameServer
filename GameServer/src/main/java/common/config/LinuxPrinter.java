@@ -81,7 +81,7 @@ public class LinuxPrinter extends PrintStream implements Runnable {
 
 	@Override
 	public void run() {
-		File f = new File(Config.SYSTEM_OUT_DIR + LocalDate.now().toString() + ".log");
+		File f = new File(System.getProperty("user.dir")+File.separator+ "sysout" +File.separator + LocalDate.now().toString() + ".log");
 		if (!f.exists())
 			f.getParentFile().mkdirs();
 

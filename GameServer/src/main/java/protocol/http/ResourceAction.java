@@ -3,8 +3,10 @@ package protocol.http;
 import game.player.Player;
 import game.player.PlayerCache;
 import game.player.PlayerService;
+import game.song.Song;
 import game.song.SongBean;
 import game.song.SongService;
+import io.netty.util.internal.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,12 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import common.net.HttpAction;
 import common.net.HttpPacket;
 import common.net.HttpProtocol;
 import common.utils.Def;
 import common.utils.JsonRespUtils;
 import common.utils.JsonUtils;
+import common.utils.StringUtils;
 
 @HttpProtocol(Def.PROTOCOL_RESOURCE)
 public class ResourceAction extends HttpAction{
@@ -33,6 +37,8 @@ public class ResourceAction extends HttpAction{
 			return getPlayerSongs(packet);
 		}else if("getSongList".equals(action)){
 			return getSongList(packet);
+		}else if("querySong".equals(action)){
+			return querySong(packet);
 		}
 		return JsonRespUtils.fail(Def.CODE_QUERY_RESOURCE_FAIL, "Can not find action:"+action);
 	}
@@ -107,6 +113,36 @@ public class ResourceAction extends HttpAction{
 			}
 		}
 		return JsonRespUtils.fail(Def.CODE_FAIL, "This song does not exist.");
+	}
+	
+	
+	/**
+	 * 歌曲查找
+	 * @param packet
+	 * @return
+	 */
+	public static String querySong(HttpPacket packet){
+		List<SongBean> result=new ArrayList<SongBean>();
+		String data=packet.getData();
+		JsonNode node=JsonUtils.decode(data);
+		String key=JsonUtils.getString("key", node);
+		int option=JsonUtils.getInt("option", node);
+		if(option==1){//根据作者查找
+			for(Song song:SongService.getSongBeanList()){
+				String singer=song.getBean().getSinger();
+				if(StringUtils.isNotBlank(singer)&&singer.contains(key)){
+					result.add(song.getBean());
+				}
+			}
+		}else{//根据歌曲名查找
+			for(Song song:SongService.getSongBeanList()){
+				String name=song.getBean().getName();
+				if(StringUtils.isNotBlank(name)&&name.contains(key)){
+					result.add(song.getBean());
+				}
+			}
+		}
+		return JsonRespUtils.success(result);
 	}
 	
 }

@@ -6,7 +6,6 @@ import game.player.PlayerService;
 import game.song.Song;
 import game.song.SongBean;
 import game.song.SongService;
-import io.netty.util.internal.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import common.net.HttpAction;
 import common.net.HttpPacket;
 import common.net.HttpProtocol;
@@ -71,7 +69,34 @@ public class ResourceAction extends HttpAction{
 		long time = JsonUtils.getLong("time", node);
 		if(time!=-1){
 			List<SongBean> list=SongService.getSongBeanList(time);
-			return JsonRespUtils.success(list);
+			List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
+			for(SongBean bean:list){
+				Map<String,Object> map=new HashMap<String, Object>();
+				map.put("name", bean.getName());
+				map.put("singer", bean.getSinger());
+				map.put("mp3URL", bean.getMp3URL());
+				map.put("bpm", bean.getBpm());
+				map.put("level", bean.getLevel());
+				Player p=PlayerCache.getPlayer(bean.getTopplayer());
+				boolean hasRight=false;
+				if(p!=null){
+					map.put("topPlayerName", p.getBean().getName());
+					List<Integer> ls=p.getSongs();
+					if(ls!=null&&ls.contains(bean.getId())){
+						hasRight=true;
+					}
+				}else{
+					map.put("topPlayerName", "");
+				}
+				map.put("topScore", bean.getTopscore());
+				map.put("state", bean.getState());
+				map.put("price", bean.getPrice());
+				map.put("createTime", bean.getCreateTime());
+				map.put("md5", bean.getMd5());
+				map.put("hasRight", hasRight);
+				result.add(map);
+			}
+			return JsonRespUtils.success(result);
 		}
 		return JsonRespUtils.fail(Def.CODE_FAIL, "Error param 'time'.");
 	}

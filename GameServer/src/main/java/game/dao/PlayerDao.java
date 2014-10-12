@@ -76,6 +76,17 @@ public class PlayerDao {
 		return bean;
 	}
 	
+	public static PlayerBean loadByThirdParty(String thirdParty){
+		PlayerBean bean=null;
+		try {
+			bean=dbUtils.read(PlayerBean.class, "where thirdParty=?", thirdParty);
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+		}
+		return bean;
+	}
+	
 	/**
 	 * 回写玩家数据
 	 */

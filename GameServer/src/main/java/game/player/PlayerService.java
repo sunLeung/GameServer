@@ -1,8 +1,14 @@
 package game.player;
 
-import game.dao.PlayerDao;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import game.dao.PlayerDao;
+import common.utils.JsonUtils;
 import common.utils.SecurityUtils;
+import common.utils.StringUtils;
 
 public class PlayerService {
 	
@@ -45,6 +51,37 @@ public class PlayerService {
 				bean.setDeviceid(deviceid);
 				bean.setToken(SecurityUtils.createUUIDString());
 				p=PlayerCache.initPlayer(bean);
+			}
+		}
+		return p;
+	}
+	
+	public static Player thirdPartylogin(String unionid,String deviceid,String data){
+		Player p=null;
+		if("1".equals(unionid)){//微信登陆
+			JsonNode jsonData=JsonUtils.decode(data);
+			String openid=JsonUtils.getString("openid", jsonData);
+			if(StringUtils.isBlank(openid)){
+				return null;
+			}
+			PlayerBean bean=PlayerDao.loadByEmail(openid);
+			if(bean!=null){
+				bean.setDeviceid(deviceid);
+				bean.setToken(SecurityUtils.createUUIDString());
+				p=PlayerCache.initPlayer(bean);
+			}else{
+				bean=new PlayerBean();
+				bean.setDeviceid(deviceid);
+				bean.setSecret(SecurityUtils.createUUIDString());
+				int sex=JsonUtils.getInt("sex", jsonData);
+				sex=sex==-1?0:sex;
+				bean.setSex(sex);
+				bean.setToken(SecurityUtils.createUUIDString());
+				
+				int id=PlayerDao.save(bean);
+				if(id!=-1){
+					p=PlayerCache.getPlayer(id);
+				}
 			}
 		}
 		return p;

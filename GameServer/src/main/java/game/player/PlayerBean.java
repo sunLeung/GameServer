@@ -15,6 +15,7 @@ public class PlayerBean extends Pojo{
 	/**0女,1男*/
 	public int sex;
 	public String password;
+	public String thirdParty;
 	/**用户秘钥*/
 	public String secret;
 	public String token;
@@ -51,6 +52,12 @@ public class PlayerBean extends Pojo{
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getThirdParty() {
+		return thirdParty;
+	}
+	public void setThirdParty(String thirdParty) {
+		this.thirdParty = thirdParty;
 	}
 	public String getToken() {
 		return token;

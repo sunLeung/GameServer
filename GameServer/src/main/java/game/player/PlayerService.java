@@ -1,11 +1,8 @@
 package game.player;
 
-import java.util.HashMap;
-import java.util.Map;
+import game.dao.PlayerDao;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
-import game.dao.PlayerDao;
 import common.utils.JsonUtils;
 import common.utils.SecurityUtils;
 import common.utils.StringUtils;
@@ -56,15 +53,22 @@ public class PlayerService {
 		return p;
 	}
 	
-	public static Player thirdPartylogin(String unionid,String deviceid,String data){
+	/**
+	 * 第三方渠道登陆
+	 * @param deviceid
+	 * @param data
+	 * @return
+	 */
+	public static Player thirdPartylogin(String deviceid,String data){
 		Player p=null;
+		JsonNode jsonData=JsonUtils.decode(data);
+		String unionid=JsonUtils.getString("unionid", jsonData);
 		if("1".equals(unionid)){//微信登陆
-			JsonNode jsonData=JsonUtils.decode(data);
 			String openid=JsonUtils.getString("openid", jsonData);
 			if(StringUtils.isBlank(openid)){
 				return null;
 			}
-			PlayerBean bean=PlayerDao.loadByEmail(openid);
+			PlayerBean bean=PlayerDao.loadByThirdParty(openid);
 			if(bean!=null){
 				bean.setDeviceid(deviceid);
 				bean.setToken(SecurityUtils.createUUIDString());
@@ -74,8 +78,12 @@ public class PlayerService {
 				bean.setDeviceid(deviceid);
 				bean.setSecret(SecurityUtils.createUUIDString());
 				int sex=JsonUtils.getInt("sex", jsonData);
-				sex=sex==-1?0:sex;
 				bean.setSex(sex);
+				String name=JsonUtils.getString("name", jsonData);
+				if(StringUtils.isBlank(name)){
+					name=StringUtils.randomName();
+				}
+				bean.setName(name);
 				bean.setToken(SecurityUtils.createUUIDString());
 				
 				int id=PlayerDao.save(bean);
@@ -85,6 +93,24 @@ public class PlayerService {
 			}
 		}
 		return p;
+	}
+	
+	public static boolean updatePlayer(int playerid,String data){
+		JsonNode jsonData=JsonUtils.decode(data);
+		Player p=PlayerCache.getPlayer(playerid);
+		if(p!=null){
+			String name=JsonUtils.getString("name", jsonData);
+			if(StringUtils.isNotBlank(name))
+				p.getBean().setName(name);
+			int sex=JsonUtils.getInt("sex", jsonData);
+			if(sex!=-1)
+				p.getBean().setSex(sex);
+			int r=PlayerDao.update(p.getBean());
+			if(r!=-1){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

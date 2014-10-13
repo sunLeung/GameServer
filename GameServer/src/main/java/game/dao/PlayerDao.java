@@ -27,6 +27,15 @@ public class PlayerDao {
 		return -1;
 	}
 	
+	public static int update(PlayerBean bean){
+		try {
+			return dbUtils.update(bean);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	/**
 	 * 加载玩家数据
 	 * @param playerid

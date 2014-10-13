@@ -52,10 +52,12 @@ public class Def {
 	/*****************************协议***************************/
 	public static final int PROTOCOL_LOGIN=0X00;
 	public static final int PROTOCOL_REGISTER=0X01;
+	public static final int PROTOCOL_THIRDPARTY_LOGIN=0X02;
 	
 	public static final int PROTOCOL_PLAYER=0X0a;
 	public static final int PROTOCOL_RESOURCE=0X0b;
 	public static final int PROTOCOL_PAY=0X0c;
+	public static final int PROTOCOL_UPDATE_PLAYER=0X0d;
 	
 	/*****************************返回码***************************/
 	/******************0-19 基础业务******************/

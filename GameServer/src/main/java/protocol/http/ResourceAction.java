@@ -47,6 +47,13 @@ public class ResourceAction extends HttpAction{
 		int resourceid = JsonUtils.getInt("resourceid", node);
 		int playerid=packet.getPlayerid();
 		if(resourceid!=-1&&playerid!=-1){
+			SongBean song=SongService.getSong(resourceid);
+			if(song!=null&&song.getPrice()<=0){
+				Map<String, Object> r=new HashMap<String, Object>();
+				Player p=PlayerCache.getPlayer(playerid);
+				r.put("secret", p.getBean().getSecret());
+				return JsonRespUtils.success(r);
+			}
 			boolean b=PlayerService.hasThisSong(playerid, resourceid);
 			if(b){
 				Map<String, Object> r=new HashMap<String, Object>();

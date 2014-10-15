@@ -88,6 +88,8 @@ public class RegisterAction extends HttpAction{
 			bean.setSex(sex);
 			bean.setToken(SecurityUtils.createUUIDString());
 			
+			bean.setMoney(300);
+			
 			int id=PlayerDao.save(bean);
 			if(id!=-1){
 				Player player=PlayerCache.getPlayer(id);

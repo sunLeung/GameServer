@@ -86,6 +86,8 @@ public class PlayerService {
 				bean.setName(name);
 				bean.setToken(SecurityUtils.createUUIDString());
 				
+				bean.setMoney(100);
+				
 				int id=PlayerDao.save(bean);
 				if(id!=-1){
 					p=PlayerCache.getPlayer(id);

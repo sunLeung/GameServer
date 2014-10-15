@@ -1,5 +1,7 @@
 package game.player;
 
+import game.dao.PlayerDao;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -80,10 +82,26 @@ public class Player {
 				this.bean.money.set(moneyAfter);
 			}
 			result=this.bean.money.get();
+			PlayerDao.update(bean);
 			StringBuilder sbLog=new StringBuilder();
 			sbLog.append(log).append("@").append(this.getId()).append("@").append(money).append("@").append(result);
 			LoggerManger.getLogger(Def.MONEY_LOG).info(sbLog.toString());
 		}
 		return result;
+	}
+	
+	/**
+	 * 给用户加歌曲
+	 * @param songid
+	 * @return
+	 */
+	public int addSong(int songid){
+		for(Integer sid:this.bean.songs){
+			if(sid==songid){
+				return 0;
+			}
+		}
+		this.bean.songs.add(songid);
+		return 1;
 	}
 }

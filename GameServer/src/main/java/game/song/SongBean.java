@@ -21,7 +21,7 @@ public class SongBean extends Pojo{
 	/**歌曲状态容器 0=是否支持爵士鼓,1=是否支持钢琴,2=是否支持吉他,3=是否支持bass 4=是否对外发布*/
 	private int state;
 	/**歌曲价格*/
-	private float price;
+	private int price;
 	/**备注字段*/
 	private String remark;
 	/**歌曲创建日期*/
@@ -77,10 +77,10 @@ public class SongBean extends Pojo{
 	public void setState(int state) {
 		this.state = state;
 	}
-	public float getPrice() {
+	public int getPrice() {
 		return price;
 	}
-	public void setPrice(float price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 	public String getRemark() {

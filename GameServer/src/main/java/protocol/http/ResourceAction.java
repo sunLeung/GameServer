@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import common.net.HttpAction;
 import common.net.HttpPacket;
 import common.net.HttpProtocol;
@@ -37,6 +38,8 @@ public class ResourceAction extends HttpAction{
 			return getSongList(packet);
 		}else if("querySong".equals(action)){
 			return querySong(packet);
+		}else if("buySong".equals(action)){
+			return buySong(packet);
 		}
 		return JsonRespUtils.fail(Def.CODE_QUERY_RESOURCE_FAIL, "Can not find action:"+action);
 	}
@@ -79,6 +82,7 @@ public class ResourceAction extends HttpAction{
 			List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
 			for(SongBean bean:list){
 				Map<String,Object> map=new HashMap<String, Object>();
+				map.put("id", bean.getId());
 				map.put("name", bean.getName());
 				map.put("singer", bean.getSinger());
 				map.put("mp3URL", bean.getMp3URL());
@@ -176,5 +180,38 @@ public class ResourceAction extends HttpAction{
 		}
 		return JsonRespUtils.success(result);
 	}
+	
+	/**
+	 * 购买歌曲
+	 * @param packet
+	 * @return
+	 */
+	public static String buySong(HttpPacket packet){
+		String data=packet.getData();
+		JsonNode node=JsonUtils.decode(data);
+		int resourceid = JsonUtils.getInt("resourceid", node);
+		int playerid=packet.getPlayerid();
+		if(resourceid!=-1&&playerid!=-1){
+			SongBean songbean=SongService.getSong(resourceid);
+			Player p=PlayerCache.getPlayer(playerid);
+			if(songbean!=null&&p!=null){
+				int price=songbean.getPrice();
+				if(price<=0){
+					return JsonRespUtils.success(resourceid);
+				}
+				for(Integer sid:p.getBean().songs){
+					if(sid==resourceid){
+						return JsonRespUtils.success(resourceid);
+					}
+				}
+				if(p.incMoney(-price, "buy_song")>=0){
+					p.addSong(resourceid);
+					return JsonRespUtils.success(resourceid);
+				}
+			}
+		}
+		return JsonRespUtils.fail(Def.CODE_FAIL, "Buy song fail.");
+	}
+
 	
 }

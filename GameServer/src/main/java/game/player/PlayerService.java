@@ -64,7 +64,7 @@ public class PlayerService {
 		JsonNode jsonData=JsonUtils.decode(data);
 		String unionid=JsonUtils.getString("unionid", jsonData);
 		if("1".equals(unionid)){//微信登陆
-			String openid=JsonUtils.getString("openid", jsonData);
+			String openid=JsonUtils.getString("identity", jsonData);
 			if(StringUtils.isBlank(openid)){
 				return null;
 			}

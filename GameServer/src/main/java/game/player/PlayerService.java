@@ -85,6 +85,7 @@ public class PlayerService {
 				}
 				bean.setName(name);
 				bean.setToken(SecurityUtils.createUUIDString());
+				bean.setThirdParty(openid);
 				
 				bean.setMoney(100);
 				

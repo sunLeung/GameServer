@@ -10,12 +10,15 @@ public class HttpPacket {
 	private int protocol;
 	private String data;
 	private HttpRequest request;
-	public HttpPacket(int playerid,String deviceid,String token,int protocol,String data,HttpRequest request){
+	private String ip;
+	public HttpPacket(int playerid,String deviceid,String token,int protocol,String data,String ip,HttpRequest request){
 		this.playerid=playerid;
 		this.deviceid=deviceid;
 		this.token=token;
 		this.protocol=protocol;
 		this.data=data;
+		this.ip=ip;
+		this.request=request;
 	}
 	
 	public int getPlayerid() {
@@ -57,6 +60,14 @@ public class HttpPacket {
 
 	public void setRequest(HttpRequest request) {
 		this.request = request;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 	
 }

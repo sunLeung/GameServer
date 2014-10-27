@@ -21,15 +21,15 @@ public class GameServer {
 			long s = System.currentTimeMillis();
 			String os = System.getProperty("sun.desktop");
 			System.out.println("[System INFO] Running desktop is " + os);
-			if ("windows".equals(os)) {
-				System.setOut(new WindowsPrinter(System.out));
-				System.setErr(new WindowsPrinter(System.err));
-			} else {
-				LinuxPrinter pl = new LinuxPrinter(System.out);
-				System.setOut(pl);
-				System.setErr(pl);
-				new Thread(pl).start();
-			}
+//			if ("windows".equals(os)) {
+//				System.setOut(new WindowsPrinter(System.out));
+//				System.setErr(new WindowsPrinter(System.err));
+//			} else {
+//				LinuxPrinter pl = new LinuxPrinter(System.out);
+//				System.setOut(pl);
+//				System.setErr(pl);
+//				new Thread(pl).start();
+//			}
 			init();
 			HttpServer.startHttpServer(4000);
 			AdminServer.startAdminServer(4001);

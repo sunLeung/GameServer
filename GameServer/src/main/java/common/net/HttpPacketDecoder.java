@@ -5,6 +5,8 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.util.CharsetUtil;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.List;
 import java.util.Set;
 
@@ -36,7 +38,13 @@ public class HttpPacketDecoder extends MessageToMessageDecoder<FullHttpRequest> 
 			int playerid=-1;
 			if(StringUtils.isNotBlank(playeridStr))
 				playerid=Integer.valueOf(playeridStr.trim());
-			HttpPacket packet = new HttpPacket(playerid,deviceid,token,protocol,data,msg);
+			SocketAddress remoteAddress = ctx.channel().remoteAddress();
+			String ip="";
+			if(remoteAddress!=null){
+				InetSocketAddress inetSocketAddress = (InetSocketAddress) remoteAddress;
+				ip=inetSocketAddress.getAddress().getHostAddress();
+			}
+			HttpPacket packet = new HttpPacket(playerid,deviceid,token,protocol,data,ip,msg);
 			out.add(packet);
 			
 			if(GameServer.isTrace){

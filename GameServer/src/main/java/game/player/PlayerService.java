@@ -2,8 +2,14 @@ package game.player;
 
 import game.dao.PlayerDao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.JsonNode;
+
+import common.utils.HttpUtils;
 import common.utils.JsonUtils;
+import common.utils.MD5;
 import common.utils.SecurityUtils;
 import common.utils.StringUtils;
 
@@ -59,15 +65,45 @@ public class PlayerService {
 	 * @param data
 	 * @return
 	 */
-	public static Player thirdPartylogin(String deviceid,String data){
+	public static Player thirdPartylogin(String deviceid,String ip,String data){
 		Player p=null;
 		JsonNode jsonData=JsonUtils.decode(data);
 		String unionid=JsonUtils.getString("unionid", jsonData);
 		if("1".equals(unionid)){//微信登陆
-			String openid=JsonUtils.getString("identity", jsonData);
-			if(StringUtils.isBlank(openid)){
-				return null;
-			}
+			p=weixinLogin(jsonData, deviceid);
+		}
+		return p;
+	}
+	
+	public static Player weixinLogin(JsonNode jsonData,String deviceid){
+		Player p=null;
+		JsonNode identity=jsonData.get("identity");
+		String openid=identity.get("openid").asText();
+		String openkey=identity.get("openkey").asText();
+		if(StringUtils.isBlank(openid)||StringUtils.isBlank(openkey)){
+			return null;
+		}
+		
+		String appid="wxcde873f99466f74a";
+		String appkey="bc0994f30c0a12a9908e353cf05d4dea";
+		String url="http://msdktest.qq.com/auth/check_token/";
+		String timestamp=System.currentTimeMillis()/1000+"";
+		Map<String,String> params=new HashMap<String,String>();
+		params.put("appid", appid+"");
+		params.put("timestamp", timestamp);
+		params.put("sig", MD5.encode(appkey+timestamp));
+		params.put("encode", 1+"");
+		url=HttpUtils.linkParams(url,params);
+		
+		
+		Map<String,Object> content=new HashMap<String,Object>();
+		content.put("accessToken", openkey);
+		content.put("openid", openid);
+		String result=HttpUtils.doPost(url, null,JsonUtils.encode2Str(content));
+		System.out.println("weixin login:"+result);
+		JsonNode rdata=JsonUtils.decode(result);
+		int ret=JsonUtils.getInt("ret", rdata);
+		if(ret==0){
 			PlayerBean bean=PlayerDao.loadByThirdParty(openid);
 			if(bean!=null){
 				bean.setDeviceid(deviceid);

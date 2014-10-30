@@ -30,6 +30,10 @@ public class Config {
 	/**数据定时回写时间*/
 	public static int FLUSH_MINUTE=30;
 	
+	/**OSS*/
+	public static final String ACCESS_ID = "tVKghDy7sZX3ly5D";
+	public static final String ACCESS_KEY = "HgIDU5tojurLK9AlL6g1YZCcPZN2Lg";
+	public static final String BUCKET_NAME = "mg-player-data";
 	
 	/**
 	 * 初始化配置

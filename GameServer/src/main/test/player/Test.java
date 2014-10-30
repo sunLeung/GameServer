@@ -7,15 +7,16 @@ import common.utils.JsonUtils;
 
 
 public class Test {
-//	private static String url="http://127.0.0.1:4000";
-	private static String url="http://127.0.0.1:4001/admin";
+	private static String url="http://127.0.0.1:4000";
+//	private static String url="http://115.28.234.110:4001/admin";
 //	private static String url="http://115.28.234.110:4000";
 	public static void main(String[] args) {
 //		query();
 //		save();
-		stop();
+//		stop();
 //		login();
 //		createSong();
+		getossSign();
 	}
 	
 	public static void save(){
@@ -24,8 +25,8 @@ public class Test {
 		requestProperty.put("protocol", "0x01");
 		
 		Map<String,Object> body = new HashMap<String, Object>();
-		body.put("name", "liangyx");
-		body.put("email", "liangyx@gmail.com");
+		body.put("name", "liangyx1");
+		body.put("email", "liangyx1@gmail.com");
 		body.put("password1", "123456");
 		body.put("password2", "123456");
 		body.put("sex", 1);
@@ -54,7 +55,7 @@ public class Test {
 		requestProperty.put("deviceid", "liangyuxin");
 		
 		Map<String,Object> body = new HashMap<String, Object>();
-		body.put("identity", "liangyuxin3.02@gmail.com");
+		body.put("identity", "liangyx1@gmail.com");
 		body.put("password", "123456");
 		String data=JsonUtils.encode2Str(body);
 		String a=HttpUtils.doPost(url, requestProperty,data);
@@ -82,6 +83,22 @@ public class Test {
 		data.put("name", "喜欢你");
 		data.put("mp3URL", "http://halo.com");
 		body.put("data", data);
+		String d=JsonUtils.encode2Str(body);
+		String a=HttpUtils.doPost(url, requestProperty,d);
+		System.out.println(a);
+	}
+	
+	public static void getossSign(){
+		Map<String,String> requestProperty=new HashMap<String, String>();
+		requestProperty.put("protocol", "0x0b");
+		requestProperty.put("deviceid", "liangyuxin");
+		requestProperty.put("token", "95300acc5a6647e59f879a2b7a281a82");
+		requestProperty.put("playerid", "36");
+		
+		Map<String,Object> body = new HashMap<String, Object>();
+		body.put("action", "getOSSUploadSign");
+		body.put("object", "minyi.jpg");
+		body.put("Content-Type", "image/jpeg");
 		String d=JsonUtils.encode2Str(body);
 		String a=HttpUtils.doPost(url, requestProperty,d);
 		System.out.println(a);

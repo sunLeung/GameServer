@@ -7,13 +7,20 @@ import game.song.Song;
 import game.song.SongBean;
 import game.song.SongService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.SimpleTimeZone;
 
+import com.aliyun.common.auth.ServiceSignature;
+import com.aliyun.common.comm.RequestMessage;
+import com.aliyun.openservices.oss.internal.SignUtils;
 import com.fasterxml.jackson.databind.JsonNode;
-
+import common.config.Config;
 import common.net.HttpAction;
 import common.net.HttpPacket;
 import common.net.HttpProtocol;
@@ -40,6 +47,8 @@ public class ResourceAction extends HttpAction{
 			return querySong(packet);
 		}else if("buySong".equals(action)){
 			return buySong(packet);
+		}else if("getOSSUploadSign".equals(action)){
+			return getOSSUploadSign(packet);
 		}
 		return JsonRespUtils.fail(Def.CODE_QUERY_RESOURCE_FAIL, "Can not find action:"+action);
 	}
@@ -211,6 +220,48 @@ public class ResourceAction extends HttpAction{
 			}
 		}
 		return JsonRespUtils.fail(Def.CODE_FAIL, "Buy song fail.");
+	}
+	
+	/**
+	 * 获取oss上传权限
+	 * @param packet
+	 * @return
+	 */
+	public static String getOSSUploadSign(HttpPacket packet){
+		String data=packet.getData();
+		JsonNode node=JsonUtils.decode(data);
+		String object= JsonUtils.getString("object", node);
+		
+		if(StringUtils.isNotBlank(object)){
+			int playerid=packet.getPlayerid();
+			String resourcePath="/"+Config.BUCKET_NAME+"/"+playerid+"/"+object;
+			SimpleDateFormat rfc822DateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+			rfc822DateFormat.setTimeZone(new SimpleTimeZone(0, "GMT"));
+			String date = rfc822DateFormat.format(new Date());
+			
+			String contentType= JsonUtils.getString("Content-Type", node);
+			if(StringUtils.isBlank(contentType)){
+				contentType="application/octet-stream";
+			}
+			
+			Map<String,String> headers=new HashMap<String, String>();
+			headers.put("Content-Type", contentType);
+			headers.put("Date", date);
+			
+			RequestMessage request = new RequestMessage();
+			request.setHeaders(headers);
+			String canonicalString = SignUtils.buildCanonicalString("PUT", resourcePath, request, null);
+			System.out.println(canonicalString);
+			String signature = ServiceSignature.create().computeSignature(Config.ACCESS_KEY, canonicalString);
+			
+			Map<String,String> result=new HashMap<String, String>();
+			result.put("Content-Type", contentType);
+			result.put("sign", signature);
+			result.put("Date", date);
+			result.put("resourcePath", resourcePath);
+			return JsonRespUtils.success(result);
+		}
+		return JsonRespUtils.fail(Def.CODE_FAIL, "Create sign fail.");
 	}
 
 	

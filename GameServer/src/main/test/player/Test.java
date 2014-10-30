@@ -7,9 +7,9 @@ import common.utils.JsonUtils;
 
 
 public class Test {
-	private static String url="http://127.0.0.1:4000";
+//	private static String url="http://127.0.0.1:4000";
 //	private static String url="http://115.28.234.110:4001/admin";
-//	private static String url="http://115.28.234.110:4000";
+	private static String url="http://115.28.234.110:4000";
 	public static void main(String[] args) {
 //		query();
 //		save();
@@ -92,7 +92,7 @@ public class Test {
 		Map<String,String> requestProperty=new HashMap<String, String>();
 		requestProperty.put("protocol", "0x0b");
 		requestProperty.put("deviceid", "liangyuxin");
-		requestProperty.put("token", "95300acc5a6647e59f879a2b7a281a82");
+		requestProperty.put("token", "dc75a4e133224a288fbd006f815fb7fb");
 		requestProperty.put("playerid", "36");
 		
 		Map<String,Object> body = new HashMap<String, Object>();

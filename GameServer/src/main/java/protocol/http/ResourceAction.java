@@ -97,16 +97,23 @@ public class ResourceAction extends HttpAction{
 				map.put("mp3URL", bean.getMp3URL());
 				map.put("bpm", bean.getBpm());
 				map.put("level", bean.getLevel());
-				Player p=PlayerCache.getPlayer(bean.getTopplayer());
+				Player topPlayer=PlayerCache.getPlayer(bean.getTopplayer());
+				if(topPlayer!=null){
+					map.put("topPlayerName", topPlayer.getBean().getName());
+				}else{
+					map.put("topPlayerName", "");
+				}
 				boolean hasRight=false;
-				if(p!=null){
-					map.put("topPlayerName", p.getBean().getName());
-					List<Integer> ls=p.getSongs();
+				Player player=PlayerCache.getPlayer(packet.getPlayerid());
+				if(player!=null){
+					List<Integer> ls=player.getSongs();
 					if(ls!=null&&ls.contains(bean.getId())){
 						hasRight=true;
 					}
-				}else{
-					map.put("topPlayerName", "");
+					//免费歌曲也有权限
+					if(bean.getPrice()<=0){
+						hasRight=true;
+					}
 				}
 				map.put("topScore", bean.getTopscore());
 				map.put("state", bean.getState());

@@ -265,7 +265,10 @@ public class ResourceAction extends HttpAction{
 			result.put("Content-Type", contentType);
 			result.put("sign", signature);
 			result.put("Date", date);
-			result.put("resourcePath", resourcePath);
+			result.put("access_id", Config.ACCESS_ID);
+			result.put("endpoint", Config.ENDPOINT);
+			result.put("bucket_name", Config.BUCKET_NAME);
+			result.put("keyname", playerid+"/"+object);
 			return JsonRespUtils.success(result);
 		}
 		return JsonRespUtils.fail(Def.CODE_FAIL, "Create sign fail.");

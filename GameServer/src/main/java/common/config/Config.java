@@ -34,6 +34,7 @@ public class Config {
 	public static final String ACCESS_ID = "tVKghDy7sZX3ly5D";
 	public static final String ACCESS_KEY = "HgIDU5tojurLK9AlL6g1YZCcPZN2Lg";
 	public static final String BUCKET_NAME = "mg-player-data";
+	public static final String ENDPOINT="oss-cn-qingdao.aliyuncs.com";
 	
 	/**
 	 * 初始化配置
